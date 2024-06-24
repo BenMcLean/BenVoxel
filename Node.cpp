@@ -1,20 +1,20 @@
 #include "Node.h"
-void Node::_init(Node* parent, std::uint8_t header) {
+void BenVoxel::Node::_init(Node* parent, std::uint8_t header) {
 	this->parent = parent;
 	this->header = header;
 }
-Node::Node(Node* parent, std::istream& in) {
+BenVoxel::Node::Node(Node* parent, std::istream& in) {
 	_init(parent, in.get());
 }
-Node::Node(Node* parent, std::uint8_t header) {
+BenVoxel::Node::Node(Node* parent, std::uint8_t header) {
 	_init(parent, header);
 }
-void Node::write(std::ostream& out) const {
+void BenVoxel::Node::write(std::ostream& out) const {
 	out.put(header);
 }
-uint8_t Node::octant() const {
+std::uint8_t BenVoxel::Node::octant() const {
 	return header & 7;
 }
-bool Node::isLeaf() const {
+bool BenVoxel::Node::isLeaf() const {
 	return (header & 0x80) > 0;
 }
