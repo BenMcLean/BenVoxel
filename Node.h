@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 class Node {
-private:
+protected:
 	void _init(Node* parent, uint8_t header);
 public:
 	uint8_t header;
