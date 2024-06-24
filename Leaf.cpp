@@ -1,15 +1,15 @@
 #include "Leaf.h"
-void Leaf::_init(Node* parent, uint8_t header, uint64_t data) {
+void Leaf::_init(Node* parent, std::uint8_t header, std::uint64_t data) {
 	Node::_init(parent, header);
 	this->data = data;
 }
-Leaf::Leaf(Node* parent, uint8_t header, uint64_t data) : Node(parent, header) {
+Leaf::Leaf(Node* parent, std::uint8_t header, std::uint64_t data) : Node(parent, header) {
 	this->data = data;
 }
-Leaf::Leaf(Node* parent, istream in) : Node(parent, in) {
+Leaf::Leaf(Node* parent, std::istream& in) : Node(parent, in) {
 	in >> data;
 }
-void Leaf::write(ostream out) const {
+void Leaf::write(std::ostream& out) const {
 	Node::write(out);
 	out.write(data);
 }

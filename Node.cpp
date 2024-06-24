@@ -1,15 +1,15 @@
 #include "Node.h"
-void Node::_init(Node* parent, uint8_t header) {
+void Node::_init(Node* parent, std::uint8_t header) {
 	this->parent = parent;
 	this->header = header;
 }
-Node::Node(Node* parent, istream in) {
+Node::Node(Node* parent, std::istream& in) {
 	_init(parent, in.get());
 }
-Node::Node(Node* parent, uint8_t header) {
+Node::Node(Node* parent, std::uint8_t header) {
 	_init(parent, header);
 }
-void Node::write(ostream out) const {
+void Node::write(std::ostream& out) const {
 	out.put(header);
 }
 uint8_t Node::octant() const {
