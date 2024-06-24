@@ -7,4 +7,5 @@ public:
 	Node(Node* parent, uint8_t header);
 	Node(Node* parent, istream in);
 	void write(ostream out) const;
+	uint8_t octant() const;
 };
