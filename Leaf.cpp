@@ -1,11 +1,14 @@
 #include "Leaf.h"
-BenVoxel::Leaf::Leaf(Node* parent, std::uint8_t header, std::uint64_t data) : Node(parent, header) {
-	this->data = data;
+BenVoxel::Leaf::Leaf(Node* parent, std::uint8_t header, std::uint8_t(&data)[8]) : Node(parent, header) {
+	for (std::uint8_t i = 0; i < 8; i++)
+		this->data[i] = data[i];
 }
 BenVoxel::Leaf::Leaf(Node* parent, std::istream& in) : Node(parent, in) {
-	data = BinaryReadWrite::readU64(in);
+	for (std::uint8_t i = 0; i < 8; i++)
+		data[i] = in.get();
 }
 void BenVoxel::Leaf::write(std::ostream& out) const {
 	Node::write(out);
-	BinaryReadWrite::writeU64(out, data);
+	for (std::uint8_t i = 0; i < 8; i++)
+		out.put(data[i]);
 }
