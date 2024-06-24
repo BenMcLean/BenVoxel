@@ -11,5 +11,5 @@ Leaf::Leaf(Node* parent, std::istream& in) : Node(parent, in) {
 }
 void Leaf::write(std::ostream& out) const {
 	Node::write(out);
-	out.write(data);
+	BinaryReadWrite::writeU64(out, data);
 }
