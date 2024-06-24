@@ -1,11 +1,13 @@
 #include "Node.h"
-Node::Node(Node* parent, uint8_t header) {
+void Node::_init(Node* parent, uint8_t header) {
 	this->parent = parent;
 	this->header = header;
 }
 Node::Node(Node* parent, istream in) {
-	this->parent = parent;
-	in >> header;
+	_init(parent, in.get());
+}
+Node::Node(Node* parent, uint8_t header) {
+	_init(parent, header);
 }
 void Node::write(ostream out) const {
 	out.put(header);
