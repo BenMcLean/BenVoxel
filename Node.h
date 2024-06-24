@@ -8,4 +8,5 @@ public:
 	Node(Node* parent, istream in);
 	void write(ostream out) const;
 	uint8_t octant() const;
+	bool isLeaf() const;
 };

@@ -13,3 +13,6 @@ void Node::write(ostream out) const {
 uint8_t Node::octant() const {
 	return header & 7;
 }
+bool Node::isLeaf() const {
+	return (header & 0x80) > 0;
+}
