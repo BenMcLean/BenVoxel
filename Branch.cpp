@@ -21,6 +21,12 @@ namespace BenVoxel {
 				count++;
 		return count;
 	}
+	bool Branch::isChildren() const {
+		for (std::uint8_t i = 0; i < 8; i++)
+			if (children[i])
+				return true;
+		return false;
+	}
 	Node* Branch::getChild(std::uint8_t octant) const {
 		return children[octant].get();
 	}
@@ -31,7 +37,7 @@ namespace BenVoxel {
 	}
 	void Branch::removeChild(std::uint8_t octant) {
 		children[octant] = nullptr;
-		if (parent && !childCount())
+		if (parent && !isChildren())
 			parent->removeChild(this->octant);
 	}
 }
