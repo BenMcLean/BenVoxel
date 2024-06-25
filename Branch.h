@@ -4,7 +4,7 @@
 namespace BenVoxel {
 	class Branch : public Node {
 	protected:
-		std::array<Node*, 8> children;
+		std::array<Node*, 8> children = {};
 	public:
 		Branch(Node* parent, std::uint8_t header, std::array<Node*, 8>& children);
 		Branch(Node* parent, std::istream& in);

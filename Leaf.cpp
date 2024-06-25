@@ -7,6 +7,6 @@ BenVoxel::Leaf::Leaf(Node* parent, std::istream& in) : Node(parent, in) {
 	in.read((char*)data.data(), 8);
 }
 void BenVoxel::Leaf::write(std::ostream& out) const {
-	out.put(0x80 | getOctant());
+	out.put(0x80 | octant);
 	out.write((const char*)data.data(), 8);
 }
