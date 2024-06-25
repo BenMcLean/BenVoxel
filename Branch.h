@@ -6,14 +6,14 @@
 namespace BenVoxel {
 	class Branch : public Node {
 	protected:
-		std::array<Node*, 8> children = {};
+		std::array<std::unique_ptr<Node>, 8> children = {};
 	public:
-		Branch(Node* parent, std::uint8_t header, std::array<Node*, 8>& children);
-		Branch(Node* parent, std::istream& in);
+		Branch(Branch* parent, std::uint8_t header);
+		Branch(Branch* parent, std::istream& in);
 		void write(std::ostream& out) const override;
 		std::uint8_t childCount() const;
-		Node* getChild(std::uint8_t child) const;
+		Node* getChild(std::uint8_t octant) const;
 		void setChild(Node& child);
-		void removeChild(std::uint8_t child);
+		void removeChild(std::uint8_t octant);
 	};
 }
