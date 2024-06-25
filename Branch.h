@@ -14,7 +14,7 @@ namespace BenVoxel {
 		std::uint8_t childCount() const;
 		bool isChildren() const;
 		Node* operator[](std::uint8_t octant) const;
-		void setChild(std::unique_ptr<Node> child);
-		void removeChild(std::uint8_t octant);
+		void set(std::unique_ptr<Node> child);
+		void remove(std::uint8_t octant);
 	};
 }

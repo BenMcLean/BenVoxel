@@ -5,9 +5,9 @@ namespace BenVoxel {
 		std::uint8_t count = ((in.get() >> 3) & 7) + 1;
 		for (std::uint8_t i = 0; i < count; i++)
 			if (in.peek() & 0x80)
-				setChild(std::make_unique<Leaf>(this, in));
+				set(std::make_unique<Leaf>(this, in));
 			else
-				setChild(std::make_unique<Branch>(this, in));
+				set(std::make_unique<Branch>(this, in));
 	}
 	void Branch::write(std::ostream& out) const {
 		out.put((childCount() - 1) << 3 | octant);
@@ -31,14 +31,14 @@ namespace BenVoxel {
 	Node* Branch::operator[](std::uint8_t octant) const {
 		return children[octant].get();
 	}
-	void Branch::setChild(std::unique_ptr<Node> child) {
+	void Branch::set(std::unique_ptr<Node> child) {
 		if (!child)
 			throw new std::invalid_argument("child should not be nullptr");
 		children[child->getOctant()] = std::move(child);
 	}
-	void Branch::removeChild(std::uint8_t octant) {
+	void Branch::remove(std::uint8_t octant) {
 		children[octant] = nullptr;
 		if (parent && !isChildren())
-			parent->removeChild(this->octant);
+			parent->remove(this->octant);
 	}
 }
