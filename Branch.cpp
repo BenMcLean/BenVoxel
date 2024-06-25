@@ -25,11 +25,13 @@ namespace BenVoxel {
 		return children[octant].get();
 	}
 	void Branch::setChild(std::unique_ptr<Node> child) {
-		children[child->getOctant()] = child;
+		if (!child)
+			throw new std::invalid_argument("child should not be nullptr");
+		children[child->getOctant()] = std::move(child);
 	}
 	void Branch::removeChild(std::uint8_t octant) {
 		children[octant] = nullptr;
-		if (parent && childCount() == 0)
+		if (parent && !childCount())
 			parent->removeChild(this->octant);
 	}
 }
