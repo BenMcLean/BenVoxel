@@ -13,7 +13,7 @@ namespace BenVoxel {
 		void write(std::ostream& out) const override;
 		std::uint8_t childCount() const;
 		Node* getChild(std::uint8_t octant) const;
-		void setChild(Node& child);
+		void setChild(std::unique_ptr<Node> child);
 		void removeChild(std::uint8_t octant);
 	};
 }
