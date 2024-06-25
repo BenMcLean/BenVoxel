@@ -11,8 +11,8 @@ namespace BenVoxel {
 		Branch(Branch* parent, std::uint8_t header);
 		Branch(Branch* parent, std::istream& in);
 		void write(std::ostream& out) const override;
-		std::uint8_t childCount() const;
-		bool isChildren() const;
+		std::uint8_t count() const;
+		bool is() const;
 		Node* operator[](std::uint8_t octant) const;
 		void set(std::unique_ptr<Node> child);
 		void remove(std::uint8_t octant);

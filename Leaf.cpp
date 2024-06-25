@@ -14,4 +14,9 @@ namespace BenVoxel {
 	std::uint8_t Leaf::operator[](std::uint8_t octant) const {
 		return data[octant];
 	}
+	void Leaf::set(std::uint8_t octant, std::uint8_t payload) {
+		data[octant] = payload;
+		if (parent && !*(uint64_t*)data.data())
+			parent->remove(octant);
+	}
 }
