@@ -23,7 +23,6 @@ std::uint8_t BenVoxel::Branch::childCount() const {
 			count++;
 	return count;
 }
-BenVoxel::Node* BenVoxel::Branch::getChild(std::uint8_t child)
-{
+BenVoxel::Node* BenVoxel::Branch::getChild(std::uint8_t child) const {
 	return children[child];
 }
