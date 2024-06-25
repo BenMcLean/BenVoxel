@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Node.h"
 #include "Leaf.h"
 namespace BenVoxel {
 	class Branch : public Node {
@@ -10,6 +9,6 @@ namespace BenVoxel {
 		Branch(Node* parent, std::istream& in);
 		void write(std::ostream& out) const override;
 		std::uint8_t childCount() const;
-		BenVoxel::Node* getChild(std::uint8_t child);
+		Node* getChild(std::uint8_t child);
 	};
 }
