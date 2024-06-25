@@ -13,6 +13,5 @@ namespace BenVoxel {
 		void write(std::ostream& out) const override;
 		std::uint8_t operator[](std::uint8_t octant) const;
 		void set(std::uint8_t octant, std::uint8_t payload);
-		bool is() const;
 	};
 }

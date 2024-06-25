@@ -16,7 +16,7 @@ namespace BenVoxel {
 	}
 	void Leaf::set(std::uint8_t octant, std::uint8_t payload) {
 		data[octant] = payload;
-		if (parent && !*(uint64_t*)data.data())
+		if (parent && data == std::array<std::uint8_t, 8>{})//This checks for all zeroes and modern compilers won't allocate a new array
 			parent->remove(octant);
 	}
 }
