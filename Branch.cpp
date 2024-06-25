@@ -1,9 +1,8 @@
 #include "Branch.h"
-BenVoxel::Branch::Branch(Node* parent, std::uint8_t header, std::array<Node*, 8>& children) : Node(parent, header) {
+BenVoxel::Branch::Branch(Node* parent, std::uint8_t header, std::array<Node*, 8>& children) : Node(parent, header), children{} {
 	this->children = children;
 }
-BenVoxel::Branch::Branch(Node* parent, std::istream& in) : Node(parent, in) {
-	children = {};
+BenVoxel::Branch::Branch(Node* parent, std::istream& in) : Node(parent, in), children{} {
 	std::uint8_t count = ((in.get() >> 3) & 7) + 1;
 	for (std::uint8_t i = 0; i < 8; i++) {
 		std::uint8_t header = in.peek();
