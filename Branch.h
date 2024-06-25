@@ -1,4 +1,7 @@
+#pragma once
 #include <iostream>
+#include <array>
+#include "Node.h"
 #include "Leaf.h"
 namespace BenVoxel {
 	class Branch : public Node {
@@ -10,5 +13,7 @@ namespace BenVoxel {
 		void write(std::ostream& out) const override;
 		std::uint8_t childCount() const;
 		Node* getChild(std::uint8_t child) const;
+		Node* setChild(Node* child);
+		Node* removeChild(std::uint8_t child);
 	};
 }

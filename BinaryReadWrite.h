@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "endian.hpp"
 namespace BenVoxel {
