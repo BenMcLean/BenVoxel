@@ -10,6 +10,7 @@ namespace BenVoxel {
 				setChild(std::make_unique<Branch>(this, in));
 	}
 	void Branch::write(std::ostream& out) const {
+		out.put(((childCount() - 1) << 3) | octant);
 		for (std::uint8_t i = 0; i < 8; i++)
 			if (children[i])
 				children[i]->write(out);
