@@ -10,6 +10,6 @@ namespace BenVoxel {
 		Branch(Node* parent, std::istream& in);
 		void write(std::ostream& out) const override;
 		std::uint8_t childCount() const;
-		Node* getChild(std::uint8_t child) const;
+		BenVoxel::Node* getChild(std::uint8_t child);
 	};
 }
