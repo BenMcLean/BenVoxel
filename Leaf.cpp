@@ -6,6 +6,7 @@ namespace BenVoxel {
 	Leaf::Leaf(Branch* parent, std::istream& in) : Node(parent, in), data{} {
 		in.get();
 		in.read((char*)data.data(), 8);
+		set(0, data[0]);//Make sure this Leaf gets deleted if it's empty
 	}
 	void Leaf::write(std::ostream& out) const {
 		out.put(0x80 | octant);
