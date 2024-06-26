@@ -10,7 +10,7 @@ namespace BenVoxel {
 				set(std::make_unique<Branch>(this, in));
 	}
 	void Branch::write(std::ostream& out) const {
-		if (!parent && isEmpty()) {
+		if (!parent && !first()) {
 			char bytes[15] = {};
 			out.write(bytes, sizeof bytes);
 			out.put(0x80);
@@ -34,11 +34,11 @@ namespace BenVoxel {
 				count++;
 		return count;
 	}
-	bool Branch::isEmpty() const {
+	Node* Branch::first() const {
 		for (std::uint8_t i = 0; i < 8; i++)
 			if (children[i])
-				return false;
-		return true;
+				return children[i].get();
+		return nullptr;
 	}
 	Node* Branch::operator[](std::uint8_t octant) const {
 		return children[octant].get();
@@ -50,7 +50,7 @@ namespace BenVoxel {
 	}
 	void Branch::remove(std::uint8_t octant) {
 		children[octant] = nullptr;
-		if (parent && isEmpty())
+		if (parent && !first())
 			parent->remove(this->octant);
 	}
 }

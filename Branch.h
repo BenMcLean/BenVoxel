@@ -13,7 +13,7 @@ namespace BenVoxel {
 		void write(std::ostream& out) const override;
 		bool isLeaf() const override;
 		std::uint8_t count() const;
-		bool isEmpty() const;
+		Node* first() const;
 		Node* operator[](std::uint8_t octant) const;
 		void set(std::unique_ptr<Node> child);
 		void remove(std::uint8_t octant);
