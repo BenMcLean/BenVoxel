@@ -3,7 +3,7 @@ namespace BenVoxel {
 	Branch::Branch(Branch* parent, std::uint8_t header) : Node(parent, header), children{} { }
 	Branch::Branch(Branch* parent, std::istream& in) : Node(parent, in), children{} {
 		std::uint8_t count = ((in.get() >> 3) & 7) + 1;
-		for (std::uint8_t i = 0; i < count; i++)
+		for (std::uint8_t child = 0; child < count; child++)
 			if (in.peek() & 0x80)
 				set(std::make_unique<Leaf>(this, in));
 			else
@@ -19,9 +19,9 @@ namespace BenVoxel {
 		}
 		else {
 			out.put((count() - 1) << 3 | octant);
-			for (std::uint8_t i = 0; i < 8; i++)
-				if (children[i])
-					children[i]->write(out);
+			for (std::uint8_t octant = 0; octant < 8; octant++)
+				if (children[octant])
+					children[octant]->write(out);
 		}
 	}
 	bool Branch::isLeaf() const {
@@ -29,15 +29,15 @@ namespace BenVoxel {
 	}
 	std::uint8_t Branch::count() const {
 		std::uint8_t count = 0;
-		for (std::uint8_t i = 0; i < 8; i++)
-			if (children[i])
+		for (std::uint8_t octant = 0; octant < 8; octant++)
+			if (children[octant])
 				count++;
 		return count;
 	}
 	Node* Branch::first() const {
-		for (std::uint8_t i = 0; i < 8; i++)
-			if (children[i])
-				return children[i].get();
+		for (std::uint8_t octant = 0; octant < 8; octant++)
+			if (children[octant])
+				return children[octant].get();
 		return nullptr;
 	}
 	Node* Branch::operator[](std::uint8_t octant) const {
