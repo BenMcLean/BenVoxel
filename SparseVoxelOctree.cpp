@@ -7,6 +7,9 @@ namespace BenVoxel {
 	void SparseVoxelOctree::write(std::ostream& out) const {
 		root.write(out);
 	}
+	std::uint8_t SparseVoxelOctree::operator[](Position& position) const {
+		return get(position.x, position.y, position.z);
+	}
 	std::uint8_t SparseVoxelOctree::get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const {
 		const Branch* branch = &root;
 		for (std::uint8_t level = 15; level > 1; level--) {
