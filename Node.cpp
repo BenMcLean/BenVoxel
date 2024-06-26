@@ -9,7 +9,22 @@ namespace BenVoxel {
 	std::uint8_t Node::getOctant() const {
 		return octant;
 	}
+	Position Node::position() const {
+		std::stack<Node*> stack = {};
+		Node* node = const_cast<Node*>(this);
+		while (node) {
+			stack.push(node);
+			node = (Node*)node->parent;
+		}
+		std::uint8_t count = 17 - stack.size();
+		std::uint16_t x = 0, y = 0, z = 0;
+		while (!stack.empty()) {
+			node = stack.top();
+			x = (x << 1) | node->getOctant() & 1;
+			y = (y << 1) | (node->getOctant() >> 1) & 1;
+			z = (z << 1) | (node->getOctant() >> 2) & 1;
+		}
+		x <<= count; y <<= count; z <<= count;
+		return Position(x, y, z);
+	}
 }
-//bool BenVoxel::Node::isLeaf() const {
-//	return (header & 0x80) > 0;
-//}

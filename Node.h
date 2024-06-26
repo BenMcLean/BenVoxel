@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stack>
 namespace BenVoxel {
 	class Branch;
 	const struct Position {
@@ -20,5 +21,6 @@ namespace BenVoxel {
 		virtual void write(std::ostream& out) const = 0;
 		virtual bool isLeaf() const = 0;
 		std::uint8_t getOctant() const;
+		Position position() const;
 	};
 }
