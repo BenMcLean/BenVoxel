@@ -9,6 +9,9 @@ namespace BenVoxel {
 	std::uint8_t Node::getOctant() const {
 		return octant;
 	}
+	Branch* Node::getParent() const {
+		return const_cast<Branch*>(parent);
+	}
 	Position Node::position() const {
 		std::stack<Node*> stack = {};
 		Node* node = const_cast<Node*>(this);

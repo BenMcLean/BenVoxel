@@ -30,8 +30,26 @@ namespace BenVoxel {
 			if (stack.size() == 14) {
 				for (uint8_t octant = 0; octant < 8; octant++) {
 					Node* node = (*branch)[octant];
-					//TODO finish this method
+					if (node && node->isLeaf()) {
+						Leaf* leaf = (Leaf*)node;
+						Position position = leaf->position();
+						for (uint8_t index = 0; index < 8; index++) {
+							uint8_t payload = (*leaf)[index];
+							if (payload)
+								list.push_back(Voxel(
+									position.x + (index & 1),
+									position.y + ((index << 1) & 1),
+									position.z + ((index << 2) & 1),
+									payload));
+						}
+					}
 				}
+			}
+			Branch* parent = branch->getParent();
+			if (parent) {
+				Node* next = parent->next(branch->getOctant());
+				if (next && !next->isLeaf())
+					push(stack, (Branch*)next);
 			}
 		}
 		return list;

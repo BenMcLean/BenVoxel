@@ -21,6 +21,7 @@ namespace BenVoxel {
 		virtual void write(std::ostream& out) const = 0;
 		virtual bool isLeaf() const = 0;
 		std::uint8_t getOctant() const;
+		Branch* getParent() const;
 		Position position() const;
 	};
 }
