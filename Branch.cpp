@@ -24,6 +24,9 @@ namespace BenVoxel {
 					children[i]->write(out);
 		}
 	}
+	bool Branch::isLeaf() const {
+		return false;
+	}
 	std::uint8_t Branch::count() const {
 		std::uint8_t count = 0;
 		for (std::uint8_t i = 0; i < 8; i++)

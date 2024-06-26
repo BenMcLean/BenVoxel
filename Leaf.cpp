@@ -11,6 +11,9 @@ namespace BenVoxel {
 		out.put(0x80 | octant);
 		out.write((const char*)data.data(), 8);
 	}
+	bool Leaf::isLeaf() const {
+		return true;
+	}
 	std::uint8_t Leaf::operator[](std::uint8_t octant) const {
 		return data[octant];
 	}

@@ -11,6 +11,7 @@ namespace BenVoxel {
 		Leaf(Branch* parent, std::uint8_t header, std::array<std::uint8_t, 8>& data);
 		Leaf(Branch* parent, std::istream& in);
 		void write(std::ostream& out) const override;
+		bool isLeaf() const override;
 		std::uint8_t operator[](std::uint8_t octant) const;
 		void set(std::uint8_t octant, std::uint8_t payload);
 	};
