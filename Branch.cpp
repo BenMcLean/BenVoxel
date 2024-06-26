@@ -11,9 +11,11 @@ namespace BenVoxel {
 	}
 	void Branch::write(std::ostream& out) const {
 		if (!parent && isEmpty()) {
-			out.write(new char[15] {}, 15);
+			char bytes[15] = {};
+			out.write(bytes, sizeof bytes);
 			out.put(0x80);
-			out.write(new char[8] {}, 8);
+			char bytes2[8] = {};
+			out.write(bytes2, sizeof bytes2);
 		}
 		else {
 			out.put((count() - 1) << 3 | octant);
