@@ -4,5 +4,7 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include "SparseVoxelOctree.h"
 
 // TODO: Reference additional headers your program requires here.

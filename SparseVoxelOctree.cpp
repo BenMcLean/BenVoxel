@@ -30,7 +30,7 @@ namespace BenVoxel {
 		push(stack, const_cast<Branch*>(&root));
 		while (!stack.empty()) {
 			Branch* branch = stack.top();
-			if (stack.size() == 14) {
+			if (stack.size() == 14)
 				for (uint8_t octant = 0; octant < 8; octant++) {
 					Node* node = (*branch)[octant];
 					if (node && node->isLeaf()) {
@@ -47,7 +47,6 @@ namespace BenVoxel {
 						}
 					}
 				}
-			}
 			Branch* parent = branch->getParent();
 			if (parent) {
 				Node* next = parent->next(branch->getOctant());

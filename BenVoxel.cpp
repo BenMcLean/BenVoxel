@@ -1,12 +1,14 @@
-﻿// BenVoxel.cpp : Defines the entry point for the application.
-//
-
-#include "BenVoxel.h"
-
-using namespace std;
+﻿#include "BenVoxel.h"
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	std::ifstream inFile;
+	inFile.open("EMPTY.BEN");
+	BenVoxel::SparseVoxelOctree svo = BenVoxel::SparseVoxelOctree(inFile);
+	inFile.close();
+	std::ofstream outFile;
+	outFile.open("EMPTY2.BEN");
+	svo.write(outFile);
+	outFile.close();
 	return 0;
 }
