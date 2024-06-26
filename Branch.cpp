@@ -40,6 +40,12 @@ namespace BenVoxel {
 				return children[octant].get();
 		return nullptr;
 	}
+	Node* Branch::next(std::uint8_t previous) const {
+		for (std::uint8_t octant = previous + 1; octant < 8; octant++)
+			if (children[octant])
+				return children[octant].get();
+		return nullptr;
+	}
 	Node* Branch::operator[](std::uint8_t octant) const {
 		return children[octant].get();
 	}

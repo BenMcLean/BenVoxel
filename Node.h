@@ -2,6 +2,13 @@
 #include <iostream>
 namespace BenVoxel {
 	class Branch;
+	const struct Position {
+	public:
+		const std::uint16_t x;
+		const std::uint16_t y;
+		const std::uint16_t z;
+		Position(std::uint16_t x, std::uint16_t y, std::uint16_t z);
+	};
 	class Node {
 	protected:
 		std::uint8_t octant;

@@ -1,6 +1,6 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
-	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) : x(x), y(y), z(z), payload(payload) { }
+	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) : Position(x, y, z), payload(payload) { }
 	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) {
 		root = Branch(nullptr, in);
 	}
@@ -26,7 +26,7 @@ namespace BenVoxel {
 		std::stack<Branch*> stack = {};
 		push(stack, const_cast<Branch*>(&root));
 		while (!stack.empty()) {
-			const Branch* branch = stack.top();
+			Branch* branch = stack.top();
 			if (stack.size() == 14) {
 				for (uint8_t octant = 0; octant < 8; octant++) {
 					Node* node = (*branch)[octant];
