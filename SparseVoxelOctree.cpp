@@ -23,8 +23,8 @@ namespace BenVoxel {
 	}
 	std::list<Voxel>& SparseVoxelOctree::voxels() const {
 		std::list<Voxel> list = {};
-		std::stack<const Branch*> stack = {};
-		push(stack, &root);
+		std::stack<Branch*> stack = {};
+		push(stack, const_cast<Branch*>(&root));
 		while (!stack.empty()) {
 			const Branch* branch = stack.top();
 			if (stack.size() == 14) {
@@ -36,7 +36,7 @@ namespace BenVoxel {
 		}
 		return list;
 	}
-	void SparseVoxelOctree::push(std::stack<const Branch*>& stack, const Branch* branch) {
+	void SparseVoxelOctree::push(std::stack<Branch*>& stack, Branch* branch) {
 		while (branch) {
 			stack.push(branch);
 			Node* node = branch->first();
