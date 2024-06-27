@@ -2,12 +2,19 @@
 namespace BenVoxel {
 	Branch::Branch(Branch* parent, std::uint8_t header) : Node(parent, header), children{} { }
 	Branch::Branch(Branch* parent, std::istream& in) : Node(parent, in), children{} {
-		std::uint8_t count = ((in.get() >> 3) & 7) + 1;
-		for (std::uint8_t child = 0; child < count; child++)
-			if (in.peek() & 0x80)
+		int header = in.get();
+		if (header < 0)
+			throw std::runtime_error("Failed to read from input stream.");
+		std::uint8_t count = ((header >> 3) & 7) + 1;
+		for (std::uint8_t child = 0; child < count; child++) {
+			int peek = in.peek();
+			if (peek < 0)
+				throw std::runtime_error("Failed to read from input stream.");
+			if (peek & 0x80)
 				set(std::make_unique<Leaf>(this, in));
 			else
 				set(std::make_unique<Branch>(this, in));
+		}
 	}
 	void Branch::write(std::ostream& out) const {
 		if (!parent && !first()) {
