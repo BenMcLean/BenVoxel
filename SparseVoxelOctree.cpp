@@ -11,7 +11,7 @@ namespace BenVoxel {
 		return get(position.x, position.y, position.z);
 	}
 	std::uint8_t SparseVoxelOctree::get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const {
-		const Branch* branch = &root;
+		Branch* branch = const_cast<Branch*>(&root);
 		for (std::uint8_t level = 15; level > 1; level--) {
 			Node* node = (*branch)[(z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1];
 			if (node && !node->isLeaf())
@@ -63,5 +63,37 @@ namespace BenVoxel {
 			if (node && !node->isLeaf())
 				branch = (Branch*)node;
 		}
+	}
+	void SparseVoxelOctree::set(Voxel voxel) {
+		return set(voxel.x, voxel.y, voxel.z, voxel.payload);
+	}
+	void SparseVoxelOctree::set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) {
+		Branch* branch = &root;
+		std::uint8_t octant;
+		for (std::uint8_t level = 15; level > 1; level--) {
+			octant = (z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1;
+			Node* node = (*branch)[octant];
+			if (node && !node->isLeaf())
+				branch = (Branch*)node;
+			else {
+				if (payload == 0)
+					return;
+				branch->set(std::make_unique<Branch>(branch, octant));
+				branch = (Branch*)(*branch)[octant];
+			}
+		}
+		octant = (z >> 1 & 1) << 2 | (y >> 1 & 1) << 1 | x >> 1 & 1;
+		Node* node = (*branch)[octant];
+		Leaf* leaf = nullptr;
+		if (!node || !node->isLeaf()) {
+			if (payload == 0)
+				return;
+			branch->set(std::make_unique<Leaf>(branch, octant));
+			leaf = (Leaf*)(*branch)[octant];
+		}
+		else {
+			leaf = (Leaf*)node;
+		}
+		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, payload);
 	}
 }

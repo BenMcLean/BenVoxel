@@ -1,8 +1,6 @@
 #include "Leaf.h"
 namespace BenVoxel {
-	Leaf::Leaf(Branch* parent, std::uint8_t header, std::array<std::uint8_t, 8>& data) : Node(parent, header), data{} {
-		this->data = data;
-	}
+	Leaf::Leaf(Branch* parent, std::uint8_t octant) : Node(parent, 0x80 | octant), data{} { }
 	Leaf::Leaf(Branch* parent, std::istream& in) : Node(parent, in), data{} {
 		in.get();
 		in.read((char*)data.data(), 8);

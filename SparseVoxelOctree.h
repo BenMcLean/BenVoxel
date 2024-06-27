@@ -19,6 +19,8 @@ namespace BenVoxel {
 		void write(std::ostream& out) const;
 		std::uint8_t operator[](Position& position) const;
 		std::uint8_t get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const;
+		void set(Voxel voxel);
+		void set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload);
 		std::list<Voxel>& voxels() const;
 	};
 }
