@@ -2,17 +2,13 @@
 #include "Branch.h"
 namespace BenVoxel {
 	Position::Position(std::uint16_t x, std::uint16_t y, std::uint16_t z) : x(x), y(y), z(z) { }
-	Node::Node(Branch* parent, std::istream& in) {
-		this->parent = parent;
+	Node::Node(Branch* parent, std::istream& in) : parent(parent), octant(0) {
 		int header = in.peek();
 		if (header < 0)
 			throw std::runtime_error("Failed to read from input stream.");
 		octant = header & 7;
 	}
-	Node::Node(Branch* parent, std::uint8_t header) {
-		this->parent = parent;
-		this->octant = header & 7;
-	}
+	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 7) { }
 	std::uint8_t Node::getOctant() const {
 		return octant;
 	}
