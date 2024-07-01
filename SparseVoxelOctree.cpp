@@ -34,6 +34,7 @@ namespace BenVoxel {
 		push(stack, const_cast<Branch*>(&root));
 		while (!stack.empty()) {
 			Branch* branch = stack.top();
+			stack.pop();
 			if (stack.size() == 14)
 				for (uint8_t octant = 0; octant < 8; octant++) {
 					Node* node = (*branch)[octant];
@@ -66,6 +67,8 @@ namespace BenVoxel {
 			Node* node = branch->first();
 			if (node && !node->isLeaf())
 				branch = (Branch*)node;
+			else
+				branch = nullptr;
 		}
 	}
 	void SparseVoxelOctree::set(Voxel voxel) {

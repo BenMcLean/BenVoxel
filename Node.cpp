@@ -29,6 +29,7 @@ namespace BenVoxel {
 		std::uint16_t x = 0, y = 0, z = 0;
 		while (!stack.empty()) {
 			node = stack.top();
+			stack.pop();
 			x = (x << 1) | node->getOctant() & 1;
 			y = (y << 1) | (node->getOctant() >> 1) & 1;
 			z = (z << 1) | (node->getOctant() >> 2) & 1;
