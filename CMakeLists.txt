@@ -12,7 +12,7 @@ endif()
 project ("BenVoxel")
 
 # Add source to this project's executable.
-add_executable (BenVoxel "BenVoxel.h" "BenVoxel.cpp" "Node.h" "Node.cpp" "Branch.h" "Branch.cpp" "Leaf.h" "Leaf.cpp" "endian.hpp" "BinaryReadWrite.h" "BinaryReadWrite.cpp" "SparseVoxelOctree.h" "SparseVoxelOctree.cpp")
+add_executable (BenVoxel "BenVoxel.h" "BenVoxel.cpp" "Node.h" "Node.cpp" "Branch.h" "Branch.cpp" "Leaf.h" "Leaf.cpp" "SparseVoxelOctree.h" "SparseVoxelOctree.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET BenVoxel PROPERTY CXX_STANDARD 20)
