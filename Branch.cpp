@@ -1,6 +1,6 @@
 #include "Branch.h"
 namespace BenVoxel {
-	Branch::Branch(Branch* parent, std::uint8_t header) : Node(parent, header), children{} { }
+	Branch::Branch(Branch* parent, std::uint8_t octant) : Node(parent, octant), children{} { }
 	Branch::Branch(Branch* parent, std::istream& in) : Node(parent, in), children{} {
 		int header = in.get();
 		if (header < 0)

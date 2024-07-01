@@ -8,7 +8,7 @@ namespace BenVoxel {
 	protected:
 		std::array<std::unique_ptr<Node>, 8> children = {};
 	public:
-		Branch(Branch* parent, std::uint8_t header);
+		Branch(Branch* parent, std::uint8_t octant);
 		Branch(Branch* parent, std::istream& in);
 		void write(std::ostream& out) const override;
 		bool isLeaf() const override;
