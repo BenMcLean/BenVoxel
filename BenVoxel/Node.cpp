@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Branch.h"
 namespace BenVoxel {
 	Position::Position(std::uint16_t x, std::uint16_t y, std::uint16_t z) : x(x), y(y), z(z) { }
 	Node::Node(Branch* parent, std::istream& in) {
@@ -23,7 +24,11 @@ namespace BenVoxel {
 		Node* node = const_cast<Node*>(this);
 		while (node) {
 			stack.push(node);
-			node = (Node*)node->parent;
+			Branch* branch = node->parent;
+			if (branch && !branch->isLeaf())
+				node = (Node*)node->parent;
+			else
+				node = nullptr;
 		}
 		std::uint8_t count = 17 - stack.size();
 		std::uint16_t x = 0, y = 0, z = 0;
