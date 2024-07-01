@@ -3,11 +3,11 @@
 int main()
 {
 	std::ifstream inFile;
-	inFile.open("..\\..\\..\\SORA.BEN", std::ios::binary);
+	inFile.open("./SORA.BEN", std::ios::binary);
 	BenVoxel::SparseVoxelOctree svo = BenVoxel::SparseVoxelOctree(inFile);
 	inFile.close();
 	std::ofstream outFile;
-	outFile.open("SORA2.BEN", std::ios::binary);
+	outFile.open("./SORA2.BEN", std::ios::binary);
 	BenVoxel::SparseVoxelOctree(svo.voxels()).write(outFile);
 	outFile.close();
 
