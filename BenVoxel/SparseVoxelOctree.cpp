@@ -1,9 +1,7 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
 	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) : Position(x, y, z), payload(payload) { }
-	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) {
-		root = Branch(nullptr, in);
-	}
+	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : root(Branch(nullptr, in)) { }
 	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) {
 		for (Voxel& voxel : voxels)
 			set(voxel);
