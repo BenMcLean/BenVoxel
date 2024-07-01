@@ -14,7 +14,7 @@ namespace BenVoxel {
 		bool isLeaf() const override;
 		std::uint8_t count() const;
 		Node* first() const;
-		Node* next(std::uint8_t previous) const;
+		Node* nextValidChild(std::uint8_t previous) const;
 		Node* operator[](std::uint8_t octant) const;
 		void set(std::unique_ptr<Node> child);
 		void remove(std::uint8_t octant);

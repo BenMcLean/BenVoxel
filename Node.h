@@ -12,8 +12,8 @@ namespace BenVoxel {
 	};
 	class Node {
 	protected:
-		std::uint8_t octant;
-		Branch* parent;//Not owned, nullptr indicates root Branch
+		std::uint8_t octant = 0;
+		Branch* parent = nullptr;//Not owned, nullptr indicates root Branch
 	public:
 		Node(Branch* parent, std::uint8_t header);
 		Node(Branch* parent, std::istream& in);

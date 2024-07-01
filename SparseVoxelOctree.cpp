@@ -54,7 +54,7 @@ namespace BenVoxel {
 				}
 			Branch* parent = branch->getParent();
 			if (parent) {
-				Node* next = parent->next(branch->getOctant());
+				Node* next = parent->nextValidChild(branch->getOctant());
 				if (next && !next->isLeaf())
 					push(stack, (Branch*)next);
 			}
