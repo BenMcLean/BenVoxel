@@ -4,6 +4,10 @@ namespace BenVoxel {
 	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) {
 		root = Branch(nullptr, in);
 	}
+	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel>& voxels) {
+		for (Voxel& voxel : voxels)
+			set(voxel);
+	}
 	void SparseVoxelOctree::write(std::ostream& out) const {
 		root.write(out);
 	}
