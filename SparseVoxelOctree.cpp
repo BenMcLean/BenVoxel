@@ -4,7 +4,7 @@ namespace BenVoxel {
 	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) {
 		root = Branch(nullptr, in);
 	}
-	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel>& voxels) {
+	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) {
 		for (Voxel& voxel : voxels)
 			set(voxel);
 	}
@@ -28,8 +28,8 @@ namespace BenVoxel {
 			return (*(Leaf*)leaf)[(z & 1) << 2 | (y & 1) << 1 | x & 1];
 		return 0;
 	}
-	std::list<Voxel>& SparseVoxelOctree::voxels() const {
-		std::list<Voxel>* list = new std::list<Voxel>();
+	std::list<Voxel> SparseVoxelOctree::voxels() const {
+		std::list<Voxel> list = {};
 		std::stack<Branch*> stack = {};
 		push(stack, const_cast<Branch*>(&root));
 		while (!stack.empty()) {
@@ -44,7 +44,7 @@ namespace BenVoxel {
 						for (uint8_t index = 0; index < 8; index++) {
 							uint8_t payload = (*leaf)[index];
 							if (payload)
-								list->push_back(Voxel(
+								list.push_back(Voxel(
 									position.x + (index & 1),
 									position.y + ((index << 1) & 1),
 									position.z + ((index << 2) & 1),
@@ -59,7 +59,7 @@ namespace BenVoxel {
 					push(stack, (Branch*)next);
 			}
 		}
-		return *list;
+		return list;
 	}
 	void SparseVoxelOctree::push(std::stack<Branch*>& stack, Branch* branch) {
 		while (branch) {
