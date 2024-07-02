@@ -1,12 +1,13 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
 	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index) : Position(x, y, z), index(index) { }
-	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : root(nullptr, in) { }
-	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) {
+	SparseVoxelOctree::SparseVoxelOctree() : root() { }
+	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : SparseVoxelOctree() { }
+	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) : SparseVoxelOctree() {
 		for (Voxel& voxel : voxels)
 			set(voxel);
 	}
-	SparseVoxelOctree::SparseVoxelOctree(SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels()) { }
+	SparseVoxelOctree::SparseVoxelOctree(const SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels()) { }
 	void SparseVoxelOctree::write(std::ostream& out) const {
 		root.write(out);
 	}
@@ -97,5 +98,9 @@ namespace BenVoxel {
 			leaf = dynamic_cast<Leaf*>(node);
 		}
 		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, index);
+	}
+	void SparseVoxelOctree::clear() {
+		for (uint8_t octant = 0; octant < 8; octant++)
+			root.remove(octant);
 	}
 }
