@@ -6,6 +6,7 @@ namespace BenVoxel {
 		for (Voxel& voxel : voxels)
 			set(voxel);
 	}
+	SparseVoxelOctree::SparseVoxelOctree(SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels()) { }
 	void SparseVoxelOctree::write(std::ostream& out) const {
 		root.write(out);
 	}

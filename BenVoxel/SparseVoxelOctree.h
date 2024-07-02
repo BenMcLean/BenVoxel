@@ -17,6 +17,7 @@ namespace BenVoxel {
 		SparseVoxelOctree() = default;
 		SparseVoxelOctree(std::istream& in);
 		SparseVoxelOctree(std::list<Voxel> voxels);
+		SparseVoxelOctree(SparseVoxelOctree& other);
 		void write(std::ostream& out) const;
 		std::uint8_t operator[](Position& position) const;
 		std::uint8_t get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const;
