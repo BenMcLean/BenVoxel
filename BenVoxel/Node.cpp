@@ -22,7 +22,7 @@ namespace BenVoxel {
 			stack.push(node);
 			node = dynamic_cast<Node*>(node->parent);
 		}
-		std::uint8_t count = 17 - stack.size();
+		std::uint8_t count = 17 - static_cast<uint8_t>(stack.size());
 		std::uint16_t x = 0, y = 0, z = 0;
 		while (!stack.empty()) {
 			node = stack.top();
