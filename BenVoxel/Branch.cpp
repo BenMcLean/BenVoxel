@@ -21,7 +21,7 @@ namespace BenVoxel {
 		if (!parent && !first()) {
 			char bytes[15] = {};
 			out.write(bytes, sizeof bytes);
-			out.put(0x80);
+			out.put(static_cast<unsigned char>(0x80));
 			char bytes2[8] = {};
 			out.write(bytes2, sizeof bytes2);
 		}
