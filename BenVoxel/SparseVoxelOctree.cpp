@@ -1,19 +1,19 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
 	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) : Position(x, y, z), payload(payload) { }
-	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : root(nullptr, in) { }
+	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : root(std::make_unique<Branch>(nullptr, in)) { }
 	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) : root{} {
 		for (Voxel& voxel : voxels)
 			set(voxel);
 	}
 	void SparseVoxelOctree::write(std::ostream& out) const {
-		root.write(out);
+		root->write(out);
 	}
 	std::uint8_t SparseVoxelOctree::operator[](Position& position) const {
 		return get(position.x, position.y, position.z);
 	}
 	std::uint8_t SparseVoxelOctree::get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const {
-		Branch* branch = const_cast<Branch*>(&root);
+		Branch* branch = root.get();
 		for (std::uint8_t level = 15; level > 1; level--) {
 			Node* node = (*branch)[(z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1];
 			if (node && !node->isLeaf())
@@ -29,7 +29,7 @@ namespace BenVoxel {
 	std::list<Voxel> SparseVoxelOctree::voxels() const {
 		std::list<Voxel> list = {};
 		std::stack<Branch*> stack = {};
-		fillStack(stack, const_cast<Branch*>(&root));
+		fillStack(stack, root.get());
 		while (!stack.empty()) {
 			Branch* branch = stack.top();
 			stack.pop();
@@ -73,7 +73,7 @@ namespace BenVoxel {
 		return set(voxel.x, voxel.y, voxel.z, voxel.payload);
 	}
 	void SparseVoxelOctree::set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) {
-		Branch* branch = &root;
+		Branch* branch = root.get();
 		std::uint8_t octant;
 		for (std::uint8_t level = 15; level > 1; level--) {
 			octant = (z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1;
