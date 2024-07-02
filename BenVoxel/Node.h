@@ -18,6 +18,8 @@ namespace BenVoxel {
 		Node(Branch* parent, std::uint8_t header);
 		Node(Branch* parent, std::istream& in);
 		virtual ~Node() = default;
+		Node(const Node&) = delete;
+		Node& operator=(const Node&) = delete;
 		virtual void write(std::ostream& out) const = 0;
 		std::uint8_t getOctant() const;
 		Branch* getParent() const;

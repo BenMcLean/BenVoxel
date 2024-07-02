@@ -11,7 +11,7 @@ namespace BenVoxel {
 	};
 	class SparseVoxelOctree {
 	protected:
-		Branch root = Branch(nullptr, 0);
+		Branch root = {};
 		static void fillStack(std::stack<Branch*>& stack, Branch* branch);
 	public:
 		SparseVoxelOctree() = default;
