@@ -20,11 +20,7 @@ namespace BenVoxel {
 		Node* node = const_cast<Node*>(this);
 		while (node) {
 			stack.push(node);
-			Branch* branch = node->parent;
-			if (branch && !branch->isLeaf())
-				node = (Node*)node->parent;
-			else
-				node = nullptr;
+			node = dynamic_cast<Node*>(node->parent);
 		}
 		std::uint8_t count = 17 - stack.size();
 		std::uint16_t x = 0, y = 0, z = 0;
