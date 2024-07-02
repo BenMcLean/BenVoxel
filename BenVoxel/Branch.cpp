@@ -31,9 +31,6 @@ namespace BenVoxel {
 					children[octant]->write(out);
 		}
 	}
-	bool Branch::isLeaf() const {
-		return false;
-	}
 	std::uint8_t Branch::count() const {
 		std::uint8_t count = 0;
 		for (std::uint8_t octant = 0; octant < 8; octant++)

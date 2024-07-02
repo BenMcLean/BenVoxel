@@ -16,14 +16,14 @@ namespace BenVoxel {
 		Branch* branch = const_cast<Branch*>(&root);
 		for (std::uint8_t level = 15; level > 1; level--) {
 			Node* node = (*branch)[(z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1];
-			if (node && !node->isLeaf())
-				branch = (Branch*)node;
+			if (dynamic_cast<Branch*>(node))
+				branch = dynamic_cast<Branch*>(node);
 			else
 				return 0;
 		}
 		Node* leaf = (*branch)[((z >> 1 & 1) << 2 | (y >> 1 & 1) << 1 | x >> 1 & 1)];
-		if (leaf && leaf->isLeaf())
-			return (*(Leaf*)leaf)[(z & 1) << 2 | (y & 1) << 1 | x & 1];
+		if (dynamic_cast<Leaf*>(leaf))
+			return (*dynamic_cast<Leaf*>(leaf))[(z & 1) << 2 | (y & 1) << 1 | x & 1];
 		return 0;
 	}
 	std::list<Voxel> SparseVoxelOctree::voxels() const {
@@ -36,8 +36,8 @@ namespace BenVoxel {
 			if (stack.size() == 14)
 				for (uint8_t octant = 0; octant < 8; octant++) {
 					Node* node = (*branch)[octant];
-					if (node && node->isLeaf()) {
-						Leaf* leaf = (Leaf*)node;
+					if (dynamic_cast<Leaf*>(node)) {
+						Leaf* leaf = dynamic_cast<Leaf*>(node);
 						Position position = leaf->position();
 						for (uint8_t index = 0; index < 8; index++) {
 							uint8_t payload = (*leaf)[index];
@@ -53,8 +53,8 @@ namespace BenVoxel {
 			Branch* parent = branch->getParent();
 			if (parent) {
 				Node* next = parent->nextValidChild(branch->getOctant());
-				if (next && !next->isLeaf())
-					fillStack(stack, (Branch*)next);
+				if (dynamic_cast<Branch*>(next))
+					fillStack(stack, dynamic_cast<Branch*>(next));
 			}
 		}
 		return list;
@@ -62,11 +62,7 @@ namespace BenVoxel {
 	void SparseVoxelOctree::fillStack(std::stack<Branch*>& stack, Branch* branch) {
 		while (branch) {
 			stack.push(branch);
-			Node* node = branch->first();
-			if (node && !node->isLeaf())
-				branch = (Branch*)node;
-			else
-				branch = nullptr;
+			branch = dynamic_cast<Branch*>(branch->first());
 		}
 	}
 	void SparseVoxelOctree::set(Voxel voxel) {
@@ -78,26 +74,26 @@ namespace BenVoxel {
 		for (std::uint8_t level = 15; level > 1; level--) {
 			octant = (z >> level & 1) << 2 | (y >> level & 1) << 1 | x >> level & 1;
 			Node* node = (*branch)[octant];
-			if (node && !node->isLeaf())
-				branch = (Branch*)node;
+			if (dynamic_cast<Branch*>(node))
+				branch = dynamic_cast<Branch*>(node);
 			else {
 				if (payload == 0)
 					return;
 				branch->set(std::make_unique<Branch>(branch, octant));
-				branch = (Branch*)(*branch)[octant];
+				branch = dynamic_cast<Branch*>((*branch)[octant]);
 			}
 		}
 		octant = (z >> 1 & 1) << 2 | (y >> 1 & 1) << 1 | x >> 1 & 1;
 		Node* node = (*branch)[octant];
 		Leaf* leaf = nullptr;
-		if (!node || !node->isLeaf()) {
+		if (!dynamic_cast<Leaf*>(node)) {
 			if (payload == 0)
 				return;
 			branch->set(std::make_unique<Leaf>(branch, octant));
-			leaf = (Leaf*)(*branch)[octant];
+			leaf = dynamic_cast<Leaf*>((*branch)[octant]);
 		}
 		else {
-			leaf = (Leaf*)node;
+			leaf = dynamic_cast<Leaf*>(node);
 		}
 		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, payload);
 	}
