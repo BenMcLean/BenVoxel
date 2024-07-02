@@ -19,11 +19,11 @@ namespace BenVoxel {
 	}
 	void Branch::write(std::ostream& out) const {
 		if (!parent && !first()) {
-			char bytes[15] = {};
-			out.write(bytes, sizeof bytes);
-			out.put(static_cast<unsigned char>(0x80));
-			char bytes2[8] = {};
-			out.write(bytes2, sizeof bytes2);
+			char branchHeaders[15] = {};
+			out.write(branchHeaders, sizeof branchHeaders);
+			out.put(static_cast<unsigned char>(0x80));//Leaf header
+			char leafData[8] = {};
+			out.write(leafData, sizeof leafData);
 		}
 		else {
 			out.put((count() - 1) << 3 | octant);
