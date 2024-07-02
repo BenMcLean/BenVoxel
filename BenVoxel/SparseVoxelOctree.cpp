@@ -1,6 +1,6 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
-	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) : Position(x, y, z), payload(payload) { }
+	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index) : Position(x, y, z), index(index) { }
 	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : root(nullptr, in) { }
 	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) {
 		for (Voxel& voxel : voxels)
@@ -39,14 +39,14 @@ namespace BenVoxel {
 					if (dynamic_cast<Leaf*>(node)) {
 						Leaf* leaf = dynamic_cast<Leaf*>(node);
 						Position position = leaf->position();
-						for (uint8_t index = 0; index < 8; index++) {
-							uint8_t payload = (*leaf)[index];
-							if (payload)
+						for (uint8_t octant = 0; octant < 8; octant++) {
+							uint8_t index = (*leaf)[octant];
+							if (index)
 								list.push_back(Voxel(
-									position.x + (index & 1),
-									position.y + ((index << 1) & 1),
-									position.z + ((index << 2) & 1),
-									payload));
+									position.x + (octant & 1),
+									position.y + ((octant >> 1) & 1),
+									position.z + ((octant >> 2) & 1),
+									index));
 						}
 					}
 				}
@@ -66,9 +66,9 @@ namespace BenVoxel {
 		}
 	}
 	void SparseVoxelOctree::set(Voxel voxel) {
-		return set(voxel.x, voxel.y, voxel.z, voxel.payload);
+		return set(voxel.x, voxel.y, voxel.z, voxel.index);
 	}
-	void SparseVoxelOctree::set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload) {
+	void SparseVoxelOctree::set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index) {
 		Branch* branch = &root;
 		std::uint8_t octant;
 		for (std::uint8_t level = 15; level > 1; level--) {
@@ -77,7 +77,7 @@ namespace BenVoxel {
 			if (dynamic_cast<Branch*>(node))
 				branch = dynamic_cast<Branch*>(node);
 			else {
-				if (payload == 0)
+				if (index == 0)
 					return;
 				branch->set(std::make_unique<Branch>(branch, octant));
 				branch = dynamic_cast<Branch*>((*branch)[octant]);
@@ -87,7 +87,7 @@ namespace BenVoxel {
 		Node* node = (*branch)[octant];
 		Leaf* leaf = nullptr;
 		if (!dynamic_cast<Leaf*>(node)) {
-			if (payload == 0)
+			if (index == 0)
 				return;
 			branch->set(std::make_unique<Leaf>(branch, octant));
 			leaf = dynamic_cast<Leaf*>((*branch)[octant]);
@@ -95,6 +95,6 @@ namespace BenVoxel {
 		else {
 			leaf = dynamic_cast<Leaf*>(node);
 		}
-		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, payload);
+		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, index);
 	}
 }

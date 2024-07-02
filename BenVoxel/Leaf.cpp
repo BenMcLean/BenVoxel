@@ -13,8 +13,8 @@ namespace BenVoxel {
 	std::uint8_t Leaf::operator[](std::uint8_t octant) const {
 		return data[octant];
 	}
-	void Leaf::set(std::uint8_t octant, std::uint8_t payload) {
-		data[octant] = payload;
+	void Leaf::set(std::uint8_t octant, std::uint8_t index) {
+		data[octant] = index;
 		if (parent && data == std::array<std::uint8_t, 8>{})//This checks for all zeroes and modern compilers won't allocate a new array
 			parent->remove(octant);
 	}

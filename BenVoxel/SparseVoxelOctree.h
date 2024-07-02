@@ -6,8 +6,8 @@
 namespace BenVoxel {
 	const struct Voxel : public Position {
 	public:
-		const std::uint8_t payload;
-		Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload);
+		const std::uint8_t index;
+		Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index);
 	};
 	class SparseVoxelOctree {
 	protected:
@@ -21,7 +21,7 @@ namespace BenVoxel {
 		std::uint8_t operator[](Position& position) const;
 		std::uint8_t get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const;
 		void set(Voxel voxel);
-		void set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t payload);
+		void set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index);
 		std::list<Voxel> voxels() const;
 	};
 }
