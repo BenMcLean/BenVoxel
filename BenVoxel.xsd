@@ -63,11 +63,37 @@
 			<xs:element name="Metadata" type="MetadataType" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="Geometry" minOccurs="1" maxOccurs="1">
 				<xs:annotation>
-					<xs:documentation>Contains binary data encoded with Z85.</xs:documentation>
+					<xs:documentation>
+						Contains binary data encoded with Z85.
+					</xs:documentation>
 				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:string"/>
-				</xs:simpleType>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Width" type="xs:unsignedShort" use="required">
+								<xs:annotation>
+									<xs:documentation>
+										Extent of model on the X axis.
+									</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="Depth" type="xs:unsignedShort" use="required">
+								<xs:annotation>
+									<xs:documentation>
+										Extent of model on the Y axis.
+									</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="Height" type="xs:unsignedShort" use="required">
+								<xs:annotation>
+									<xs:documentation>
+										Extent of model on the Z axis.
+									</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="Name" type="NameAttributeType" use="required"/>
