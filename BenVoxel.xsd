@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" vc:minVersion="1.1">
+	<xs:element name="BenVoxel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Metadata" type="MetadataType" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Model" type="ModelType" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:assert test="count(distinct-values(//@Name)) = count(//@Name)" xpathDefaultNamespace="##targetNamespace">
+			<xs:annotation>
+				<xs:documentation>
+					Ensures Name attributes are unique among immediate siblings of the same element name.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:assert>
+	</xs:element>
+	<xs:complexType name="MetadataType">
+		<xs:sequence>
+			<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Point" type="PointType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Palette" type="PaletteType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:assert test="if (parent::Model) then Point[@Name='__Size'] else true()" xpathDefaultNamespace="##targetNamespace">
+			<xs:annotation>
+				<xs:documentation>
+					Ensures that Metadata elements which are children of Model elements have at least one Point named "__Size".
+				</xs:documentation>
+			</xs:annotation>
+		</xs:assert>
+	</xs:complexType>
+	<xs:complexType name="PropertyType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Name" type="NameAttributeType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="PointType">
+		<xs:attribute name="Name" type="NameAttributeType" use="required"/>
+		<xs:attribute name="X" type="xs:int" use="required"/>
+		<xs:attribute name="Y" type="xs:int" use="required"/>
+		<xs:attribute name="Z" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="PaletteType">
+		<xs:sequence>
+			<xs:element name="Color" minOccurs="1" maxOccurs="256">
+				<xs:complexType>
+					<xs:attribute name="Argb" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="#[0-9A-Fa-f]{8}"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Name" type="NameAttributeType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ModelType">
+		<xs:sequence>
+			<xs:element name="Metadata" type="MetadataType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Geometry" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Contains binary data encoded with Z85.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Name" type="NameAttributeType" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="NameAttributeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+			<xs:pattern value="(?!__Name).+"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

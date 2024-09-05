@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A9993177-CE6B-4B76-89C5-9BD3749EFA80}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		BenVoxel.xsd = BenVoxel.xsd
 		README.md = README.md
 	EndProjectSection
 EndProject
