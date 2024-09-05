@@ -75,7 +75,6 @@
 	<xs:simpleType name="NameAttributeType">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="255"/>
-			<xs:pattern value="(?!__Name).+"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>
