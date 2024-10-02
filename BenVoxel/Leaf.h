@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <algorithm>
 #include <array>
 #include "Node.h"
 #include "Branch.h"
