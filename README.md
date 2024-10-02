@@ -11,7 +11,7 @@ Models (sets of voxels) are expected to be following the MagicaVoxel convention,
 
 To serialize a model, geometry is structured as a sparse voxel octree for efficient compression, so that the coordinates of the voxels are implied from their positions in the octree and empty spaces are not stored.
 ### Nodes
-There are four node types.
+There are four node types, which include one type of branch and three types of leaves.
 #### Header
 All nodes start with a 1-byte header, composed of bits from left to right:
 * Header bits 7-6: Node type indicator
