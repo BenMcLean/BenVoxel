@@ -121,7 +121,7 @@
 					<xs:attribute name="Description" type="xs:string" use="optional">
 						<xs:annotation>
 							<xs:documentation>
-								A Description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
+								A description should stay associated with the color it describes even when the colors or their order changes. The first line of the description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
 							</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
