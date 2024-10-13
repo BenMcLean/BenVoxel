@@ -19,13 +19,6 @@
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:assert test="count(distinct-values(//@Name)) = count(//@Name)" xpathDefaultNamespace="##targetNamespace">
-			<xs:annotation>
-				<xs:documentation>
-					Ensures Name attributes are unique among immediate siblings of the same element name.
-				</xs:documentation>
-			</xs:annotation>
-		</xs:assert>
 	</xs:element>
 	<xs:complexType name="MetadataType">
 		<xs:annotation>
@@ -95,7 +88,7 @@
 	<xs:complexType name="PaletteType">
 		<xs:annotation>
 			<xs:documentation>
-				Palettes contain between 1 and 256 32-bit colors with optional descriptions for each color.
+				Contains between 1 and 256 32-bit colors with optional descriptions for each color.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -121,7 +114,7 @@
 					<xs:attribute name="Description" type="xs:string" use="optional">
 						<xs:annotation>
 							<xs:documentation>
-								A Description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading this format.
+								A Description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
 							</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
@@ -148,7 +141,7 @@
 			<xs:element name="Geometry" minOccurs="1" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation>
-						Contains binary data in the format of a sparse voxel octree encoded with Z85.
+						Contains binary data in the format of a sparse voxel octree. In the XML format, this data is encoded with Z85 to ensure valid XML characters. The binary format (.BEN files) stores this data raw, without Z85 encoding. The model sizes are omitted from the start of the binary data here since they are included as XML attributes instead. The size coordinates are outside the model and geometry data outside these bounds may be discarded. Dimensions of 0 are invalid. Setting one of the dimensions to the maximum extent of 65,535 will result in assignable coordinates for that axis maxing out at 65,534 to keep the implementation simple.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -197,5 +190,12 @@
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="255"/>
 		</xs:restriction>
+		<xs:assert test="count(../*[@Name = current()]) = 1">
+			<xs:annotation>
+				<xs:documentation>
+					Ensures Name attributes are unique among immediate siblings of the same element type. This constraint is crucial for proper implementation, as it prevents conflicts when storing data in Dictionary structures keyed by the Name attribute. Different element types or non-sibling elements of the same type can have the same Name attribute value without causing issues.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:assert>
 	</xs:simpleType>
 </xs:schema>
