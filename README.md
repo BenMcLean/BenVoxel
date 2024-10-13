@@ -53,7 +53,7 @@ Corresponds to one or more `<Palette/>` elements in the XML format. It contains:
 - `Count`: One unsigned 16-bit integer for the number of palettes.
 - For each palette:
   - `Name`: One `KeyString` for the palette name, expected to be unique within this chunk.
-  - `Length`: One unsigned byte representing (palette length - 1). A value of `0` indicates a length of `1`, and `255` indicates a length of `256`. This range includes the background color at index zero while the rest of the indices correspond to the voxel payload bytes.
+  - `Length`: One unsigned byte representing the number of colors minus one, with a range of 0-255 representing 1-256 colors. A value of `0` indicates `1` colors, and a value of `255` indicates `256` colors. This range includes the background color at index zero while the rest of the indices correspond to the voxel payload bytes.
   - `Colors`: A series of `Length` 32-bit unsigned integers representing colors in ARGB format.
   - `Descriptions`: A series of `Length` `ValueString`s describing the colors. A description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
 #### `SVOG` chunk (Geometry)

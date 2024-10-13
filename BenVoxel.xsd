@@ -35,7 +35,7 @@
 	<xs:complexType name="PropertyType">
 		<xs:annotation>
 			<xs:documentation>
-				Properties allow assosicating arbitrary string contents with names for embedding additional data not specified in this file format.
+				Properties allow associating arbitrary string contents with names for embedding additional data not specified in this file format.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:simpleContent>
