@@ -29,27 +29,33 @@ BenVoxel binary files start with a `BENV` chunk which contains the entire file a
 - `Models`: One or more `MODL` chunks.
 #### `DATA` chunk (Metadata)
 Corresponds to the `<Metadata/>` element in the XML format. It contains:
-- `Properties`: Optionally, any number of `PROP` chunks.
-- `Points`: Optionally, any number of `PT3D` chunks.
-- `Palettes`: Optionally, any number of `PALC` chunks.
+- `Properties`: One `PROP` chunk. (optional)
+- `Points`: One `PT3D` chunk. (optional)
+- `Palettes`: One `PALC` chunk. (optional)
 #### `MODL` chunk (Model)
 Corresponds to the `<Model/>` element in the XML format. It contains:
-- `Metadata`: Optionally, one `DATA` chunk.
+- `Metadata`: One `DATA` chunk. (optional)
 - `Geometry`: One `SVOG` chunk.
-#### `PROP` chunk (Property)
-Corresponds to the `<Property/>` element in the XML format. It contains:
-- `Name`: One `KeyString` for the property name, expected to be unique among properties within this metadata chunk.
-- `Value`: One `ValueString` for the property value.
-#### `PT3D` chunk (Point)
-Corresponds to the `<Point/>` element in the XML format. It contains:
-- `Name`: One `KeyString` for the point name, expected to be unique among points within this metadata chunk.
-- `Coordinates`: Three signed 32-bit integers for the X, Y and Z coordinates.
-#### `PALC` chunk (Palette)
-Corresponds to the `<Palette/>` element in the XML format. It contains:
-- `Name`: One `KeyString` for the palette name, expected to be unique among palettes within this metadata chunk.
-- `Length`: One unsigned byte representing (palette length - 1). A value of `0` indicates a length of `1`, and `255` indicates a length of `256`. This range includes the background color at index zero while the rest of the indices correspond to the voxel payload bytes.
-- `Colors`: A series of `Length` 32-bit unsigned integers representing colors in ARGB format.
-- `Descriptions`: A series of `Length` `ValueString`s describing the colors. A description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
+#### `PROP` chunk (Properties)
+Corresponds to one or more `<Property/>` elements in the XML format. It contains:
+- `Count`: One unsigned 16-bit integer for the number of properties.
+- For each property:
+  - `Name`: One `KeyString` for the property name, expected to be unique within this chunk.
+  - `Value`: One `ValueString` for the property value.
+#### `PT3D` chunk (Points)
+Corresponds to one or more `<Point/>` elements in the XML format. It contains:
+- `Count`: One unsigned 16-bit integer for the number of points.
+- For each point:
+  - `Name`: One `KeyString` for the point name, expected to be unique within this chunk.
+  - `Coordinates`: Three signed 32-bit integers for the X, Y and Z coordinates.
+#### `PALC` chunk (Palettes)
+Corresponds to one or more `<Palette/>` elements in the XML format. It contains:
+- `Count`: One unsigned 16-bit integer for the number of palettes.
+- For each palette:
+  - `Name`: One `KeyString` for the palette name, expected to be unique within this chunk.
+  - `Length`: One unsigned byte representing (palette length - 1). A value of `0` indicates a length of `1`, and `255` indicates a length of `256`. This range includes the background color at index zero while the rest of the indices correspond to the voxel payload bytes.
+  - `Colors`: A series of `Length` 32-bit unsigned integers representing colors in ARGB format.
+  - `Descriptions`: A series of `Length` `ValueString`s describing the colors. A description should stay associated with the color it describes even when the colors or their order changes. The first line of the Description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
 #### `SVOG` chunk (Geometry)
 Stands for "**S**parse **V**oxel **O**ctree **G**eometry". Corresponds to the `<Geometry/>` element in the XML format. It contains:
 - `Size`: Three unsigned 16-bit integers for the (X) width, (Y) depth and (Z) height of the model. The size coordinates are outside the model and geometry data outside these bounds may be discarded. Dimensions of 0 are invalid. Setting one of the dimensions to the maximum extent of 65,535 will result in assignable coordinates for that axis maxing out at 65,534 to keep the implementation simple.
@@ -63,9 +69,9 @@ The first three data elements of a voxel are 16-bit unsigned integers for the X,
 #### Payload
 The fourth data element of a voxel is the payload of one byte for the index to reference a color or material, where 0 is reserved for an empty or absent voxel, leaving 255 usable colors or materials.
 ### Models
-Models (sets of voxels) are expected to be following the MagicaVoxel convention, which is Z+up, right-handed, so X+ means right/east in width, Y+ means forwards/north in depth and Z+ means up in height. Models are expected to be aligned so that their lower edge is 0 on all three axes.
+Models (sets of voxels) are limited by 16-bit unsigned integer bounds, so valid geometry can range from coordinates of 0 to 65,534. Model contents are expected to be following the MagicaVoxel convention, which is Z+up, right-handed, so X+ means right/east in width, Y+ means forwards/north in depth and Z+ means up in height. Models are expected to be aligned so that their lowest edge occupies coordinate 0 on all three axes.
 #### Octree
-To serialize a model, geometry is structured as a sparse voxel octree for efficient compression, so that the coordinates of the voxels are implied from their positions in the octree and empty spaces are not stored.
+To serialize a model, geometry is structured as a sparse voxel octree for compression, so that the coordinates of the voxels are implied from their positions in the octree and empty spaces are not stored.
 
 The octree has a fixed depth of 16 levels, corresponding to the 16 bits of addressable space in the unsigned 16-bit integer spatial coordinates. The first 15 levels consist of only Branch nodes, while the 16th and final level contains only Leaf nodes.
 ### Nodes
