@@ -24,6 +24,11 @@
 						Version information for the BenVoxel file. Higher alphanumeric comparison indicates higher version.
 					</xs:documentation>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>

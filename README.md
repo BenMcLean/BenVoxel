@@ -27,11 +27,16 @@ All chunks have:
 - 4 bytes: an unsigned 32-bit integer with the length of this chunk (except this field itself and the chunk identifier).
 - variable-sized field: the chunk data itself, of the size given in the previous field.
 - a pad byte, if the chunk's length is not even. This maintains 16-bit alignment, following the convention established by the RIFF format. While less crucial for modern systems, this is maintained for historical reasons and potential performance benefits on some architectures.
+
+This applies to ***all*** chunks, so this information won't be repeated in the individual chunk type descriptions.
 #### `BENV` chunk (Root)
 BenVoxel binary files start with a `BENV` chunk which contains the entire file and corresponds to the `<BenVoxel/>` root element in the XML format. It contains:
-- `Version`: One `ValueString` for version information. Higher alphanumeric comparison indicates higher version.
-- `Global`: One `DATA` chunk for global metadata. (optional)
-- `Models`: One or more `MODL` chunks.
+- `Version`: One `KeyString` for version information. Higher alphanumeric comparison indicates higher version.
+- Compressed with zlib:
+  - `Global`: One `DATA` chunk for global metadata. (optional)
+  - `Models`: One or more `MODL` chunks.
+
+The zlib-compressed data is in the standard zlib format, including the 2-byte zlib header and 4-byte Adler-32 checksum. The compressed data should be decompressed before parsing the contained chunks. The size of the compressed data can be determined by subtracting the size of the Version field (the content of its 1-byte length field plus 1) from the `BENV` chunk size.
 #### `DATA` chunk (Metadata)
 Corresponds to the `<Metadata/>` element in the XML format. It contains:
 - `Properties`: One `PROP` chunk. (optional)
@@ -60,7 +65,8 @@ Corresponds to one or more `<Palette/>` elements in the XML format. It contains:
   - `Name`: One `KeyString` for the palette name, expected to be unique within this chunk.
   - `Length`: One unsigned byte representing the number of colors minus one, with a range of 0-255 representing 1-256 colors. A value of `0` indicates `1` colors, and a value of `255` indicates `256` colors. This range includes the background color at index zero while the rest of the indices correspond to the voxel payload bytes.
   - `Colors`: A series of `Length` 32-bit unsigned integers representing colors in ARGB format.
-  - `Descriptions`: A series of `Length` `ValueString`s describing the colors. A description should stay associated with the color it describes even when the colors or their order changes. The first line of the description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
+  - `HasDescriptions`: One unsigned byte with value `0` to indicate no descriptions xor any other value to include descriptions.
+  - `Descriptions`: A series of `Length` `ValueString`s describing the colors. Only included if `HasDescriptions` is not `0`. A description should stay associated with the color it describes even when the colors or their order changes. The first line of the description should be a short, human-readable message such as could be displayed as a tooltip in an editor to remind the user what this color or material value is being used for without crowding the screen. Additional data not intended to be displayed in such a context, such as settings for an associated material, can be placed after the first line. Editors not actually using such additional data should still preserve it when saving and loading.
 #### `SVOG` chunk (Geometry)
 Stands for "**S**parse **V**oxel **O**ctree **G**eometry". Corresponds to the `<Geometry/>` element in the XML format. It contains:
 - `Size`: Three unsigned 16-bit integers for the (X) width, (Y) depth and (Z) height of the model. The size coordinates are outside the model and geometry data outside these bounds may be discarded. Dimensions of 0 are invalid. Setting one of the dimensions to the maximum extent of 65,535 will result in assignable coordinates for that axis maxing out at 65,534 to keep the implementation simple.
