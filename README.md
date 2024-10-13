@@ -3,11 +3,15 @@ BenVoxel files use sparse voxel octrees to compress voxel model geometry for fil
 
 The idea is to sacrifice processing speed to get a very small memory storage size for the actual geometry while keeping the implementation relatively simple and also allowing for extensive metadata to be optionally included. Compression is a concern for the geometry but not for the metadata because while uncompressed voxel model geometry data grows exponentially with model size, metadata doesn't.
 
-There will be no license requirements restricting usage, but this format is designed for small voxel models intended for video games, animations or other entertainment, artistic or aesthetic use cases, so its design might not be ideal for unrelated scientific, medical, industrial or military applications. Also, be aware that none of this has been engineered to provide security features (such as anti-cheat, checksums or length constraints for overflow protection) so use at your own risk.
+There will be no license requirements restricting usage, but this format is designed for small voxel models intended for video games, animations or other entertainment, artistic or aesthetic use cases, so its design might not be ideal for unrelated academic, scientific, medical, industrial or military applications. Also, be aware that none of this has been engineered to provide security features (such as anti-cheat, checksums or length constraints for overflow protection) so use at your own risk.
 ## XML format
 The BenVoxel standard describes two inter-related file formats. One is a binary format with the extension `.BEN` and the other is an XML format (recommended extension `.BEN.xml`) designed to contain all of the same information as the binary format but with the metadata kept human-readable. The XML format uses Z85 encoding for the geometry data. A game developer might keep their voxel models in the XML format during development but automatically convert to the binary format (potentially stripping out metadata) as part of their release pipeline.
+### Schema
+An XML schema for documentation purposes only (not providing validation for security) is included in the file `BenVoxel.xsd`. All the elements and attributes in the XML correspond directly to chunks or fields in the binary format.
+### Versioning
+Both the binary and XML formats include version information. In the binary format, this is a field in the `BENV` chunk. In the XML format, it's an attribute of the root `BenVoxel` element. The version should be compared alphanumerically as a string, with higher values indicating newer versions.
 
-An XML schema for documentation purposes only (not providing validation for security) is included in the file `BenVoxel.xsd`. All the elements and attributes in the XML correspond directly to fields in the binary format.
+Implementations should rely on the Version attribute/field within the file for determining BenVoxel format feature support, not the schema version.
 ## Binary format
 The BenVoxel binary format is based in concept on the Resource Interchange File Format (RIFF) introduced by Microsoft and IBM in 1991. This type of file is divided into chunks.
 ### Type definitions
@@ -25,6 +29,7 @@ All chunks have:
 - a pad byte, if the chunk's length is not even. This maintains 16-bit alignment, following the convention established by the RIFF format. While less crucial for modern systems, this is maintained for historical reasons and potential performance benefits on some architectures.
 #### `BENV` chunk (Root)
 BenVoxel binary files start with a `BENV` chunk which contains the entire file and corresponds to the `<BenVoxel/>` root element in the XML format. It contains:
+- `Version`: One `ValueString` for version information. Higher alphanumeric comparison indicates higher version.
 - `Global`: One `DATA` chunk for global metadata. (optional)
 - `Models`: One or more `MODL` chunks.
 #### `DATA` chunk (Metadata)

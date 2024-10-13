@@ -18,6 +18,13 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="Version" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>
+						Version information for the BenVoxel file. Higher alphanumeric comparison indicates higher version.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="MetadataType">
