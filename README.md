@@ -34,7 +34,10 @@ BenVoxel binary files start with a `BENV` chunk which contains the entire file a
 - `Version`: One `KeyString` for version information. Higher alphanumeric comparison indicates higher version.
 - Compressed with zlib:
   - `Global`: One `DATA` chunk for global metadata. (optional)
-  - `Models`: One or more `MODL` chunks.
+  - `Count`: One unsigned 16-bit integer for the number of models.
+  - For each model:
+    - `Name`: One `KeyString` for the model name, expected to be unique among models within the file.
+    - `Model`: One `MODL` chunk.
 
 The zlib-compressed data is in the standard zlib format, including the 2-byte zlib header and 4-byte Adler-32 checksum. The compressed data should be decompressed before parsing the contained chunks. The size of the compressed data can be determined by subtracting the size of the Version field (the content of its 1-byte length field plus 1) from the `BENV` chunk size.
 #### `DATA` chunk (Metadata)
