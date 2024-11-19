@@ -7,23 +7,19 @@ namespace BenVoxel {
 		expandCollapsed(color);
 	}
 	Branch::Branch(Branch* parent, std::istream& in) : Node(parent, in), children{} {
-		std::uint8_t header = in.get();
+		std::uint8_t header = readByte(in, "Failed to read branch header byte from input stream.");
 		switch (header & TYPE_MASK) {
 		case BRANCH_REGULAR: {
 			std::uint8_t count = ((header >> 3) & 0b111) + 1;
-			for (std::uint8_t child = 0; child < count; child++) {
-				int peek = in.peek();
-				if (peek < 0)
-					throw std::runtime_error("Failed to read from input stream.");
-				if (peek >> 7)//Check if it's a leaf (both 2-byte and 8-byte start with 1)
+			for (std::uint8_t child = 0; child < count; child++)
+				if (peekByte(in) >> 7)//Check if it's a leaf (both 2-byte and 8-byte start with 1)
 					set(std::make_unique<Leaf>(this, in));
 				else
 					set(std::make_unique<Branch>(this, in));
-			}
 			break;
 		}
 		case BRANCH_COLLAPSED: {
-			expandCollapsed(in.get());
+			expandCollapsed(readByte(in, "Failed to read collapsed branch value from input stream."));
 			break;
 		}
 		default:

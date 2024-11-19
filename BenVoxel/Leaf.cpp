@@ -6,11 +6,11 @@ namespace BenVoxel {
 		data.fill(color);
 	}
 	Leaf::Leaf(Branch* parent, std::istream& in) : Node(parent, in), data{} {
-		std::uint8_t header = in.get();
+		std::uint8_t header = readByte(in, "Failed to read leaf header byte from input stream.");
 		switch (header & TYPE_MASK) {
 		case LEAF_2BYTE: {
-			std::uint8_t foreground = in.get(),
-				background = in.get();
+			std::uint8_t foreground = readByte(in, "Failed to read foreground voxel from input stream."),
+				background = readByte(in, "Failed to read background voxel from input stream.");
 			std::uint8_t where = (header >> 3) & 0b111;
 			for (std::uint8_t i = 0; i < 8; i++)
 				data[i] = (i == where) ? foreground : background;

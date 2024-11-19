@@ -3,10 +3,7 @@
 namespace BenVoxel {
 	Position::Position(std::uint16_t x, std::uint16_t y, std::uint16_t z) : x(x), y(y), z(z) {}
 	Node::Node(Branch* parent, std::istream& in) : parent(parent), octant(0) {
-		int header = in.peek();
-		if (header < 0)
-			throw std::runtime_error("Failed to read from input stream.");
-		octant = header & 0b111;
+		octant = peekByte(in, "Failed to peek at node header byte from input stream.") & 0b111;
 	}
 	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 0b111) {}
 	std::uint8_t Node::getOctant() const {
@@ -42,5 +39,17 @@ namespace BenVoxel {
 		}
 		x <<= count; y <<= count; z <<= count;
 		return Position(x, y, z);
+	}
+	std::uint8_t Node::readByte(std::istream& in, const char* errorMessage) {
+		int value = in.get();
+		if (value < 0)
+			throw std::runtime_error(errorMessage);
+		return static_cast<std::uint8_t>(value);
+	}
+	std::uint8_t Node::peekByte(std::istream& in, const char* errorMessage) {
+		int value = in.peek();
+		if (value < 0)
+			throw std::runtime_error(errorMessage);
+		return static_cast<std::uint8_t>(value);
 	}
 }

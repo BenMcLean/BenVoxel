@@ -30,5 +30,7 @@ namespace BenVoxel {
 		Branch* getParent() const;
 		std::uint8_t depth() const;
 		Position position() const;
+		static std::uint8_t readByte(std::istream& in, const char* errorMessage = "Failed to read byte from input stream.");
+		static std::uint8_t peekByte(std::istream& in, const char* errorMessage = "Failed to peek at byte from input stream.");
 	};
 }
