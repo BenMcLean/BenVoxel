@@ -1,19 +1,28 @@
 #include "Node.h"
 #include "Branch.h"
 namespace BenVoxel {
-	Position::Position(std::uint16_t x, std::uint16_t y, std::uint16_t z) : x(x), y(y), z(z) { }
+	Position::Position(std::uint16_t x, std::uint16_t y, std::uint16_t z) : x(x), y(y), z(z) {}
 	Node::Node(Branch* parent, std::istream& in) : parent(parent), octant(0) {
 		int header = in.peek();
 		if (header < 0)
 			throw std::runtime_error("Failed to read from input stream.");
 		octant = header & 7;
 	}
-	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 7) { }
+	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 7) {}
 	std::uint8_t Node::getOctant() const {
 		return octant;
 	}
 	Branch* Node::getParent() const {
 		return const_cast<Branch*>(parent);
+	}
+	std::uint8_t Node::depth() const {
+		std::uint8_t d = 0;
+		const Node* current = this;
+		while (current->parent) {
+			d++;
+			current = current->parent;
+		}
+		return d;
 	}
 	Position Node::position() const {
 		std::stack<Node*> stack = {};

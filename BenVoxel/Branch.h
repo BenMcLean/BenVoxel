@@ -18,5 +18,9 @@ namespace BenVoxel {
 		Node* operator[](std::uint8_t octant) const;
 		void set(std::unique_ptr<Node> child);
 		void remove(std::uint8_t octant);
+		void expandCollapsed(std::uint8_t color);
+		std::uint8_t tryCollapse() const;
+		std::uint8_t tryCollapsing(std::uint8_t color) const;
+		std::uint8_t tryCollapseGetColor() const;
 	};
 }
