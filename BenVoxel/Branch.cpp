@@ -2,9 +2,12 @@
 namespace BenVoxel {
 	Branch::Branch() : Node(nullptr, 0), children{} {}
 	Branch::Branch(Branch* parent, std::uint8_t octant) : Node(parent, octant), children{} {}
+	Branch::Branch(Branch* parent, std::uint8_t octant, std::uint8_t color) : Node(parent, octant), children{}
+	{
+		expandCollapsed(color);
+	}
 	Branch::Branch(Branch* parent, std::istream& in) : Node(parent, in), children{} {
 		std::uint8_t header = in.get();
-		octant = header & 0b111;
 		switch (header & TYPE_MASK) {
 		case BRANCH_REGULAR: {
 			std::uint8_t count = ((header >> 3) & 0b111) + 1;
@@ -29,18 +32,11 @@ namespace BenVoxel {
 	}
 	void Branch::expandCollapsed(std::uint8_t color) {
 		if (depth() == 15)
-			for (std::uint8_t octant = 0; octant < 8; octant++) {
-				std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>(this, octant);
-				for (std::uint8_t i = 0; i < 8; i++)
-					leaf->set(i, color);
-				set(std::move(leaf));
-			}
+			for (std::uint8_t octant = 0; octant < 8; octant++)
+				set(std::make_unique<Leaf>(this, octant, color));
 		else
-			for (std::uint8_t octant = 0; octant < 8; octant++) {
-				std::unique_ptr<Branch> branch = std::make_unique<Branch>(this, octant);
-				branch->expandCollapsed(color);
-				set(std::move(branch));
-			}
+			for (std::uint8_t octant = 0; octant < 8; octant++)
+				set(std::make_unique<Branch>(this, octant, color));
 	}
 	void Branch::write(std::ostream& out) const {
 		if (!parent && !first()) {// Empty model case

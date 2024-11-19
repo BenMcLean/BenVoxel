@@ -10,6 +10,7 @@ namespace BenVoxel {
 	public:
 		Branch();
 		Branch(Branch* parent, std::uint8_t octant);
+		Branch(Branch* parent, std::uint8_t octant, std::uint8_t color);
 		Branch(Branch* parent, std::istream& in);
 		void write(std::ostream& out) const override;
 		std::uint8_t count() const;

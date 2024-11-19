@@ -1,9 +1,12 @@
 #include "Leaf.h"
 namespace BenVoxel {
-	Leaf::Leaf(Branch* parent, std::uint8_t octant) : Node(parent, 0x80 | octant), data{} {}
+	Leaf::Leaf(Branch* parent, std::uint8_t octant) : Node(parent, octant), data{} {}
+	Leaf::Leaf(Branch* parent, std::uint8_t octant, std::uint8_t color) : Node(parent, octant), data{}
+	{
+		data.fill(color);
+	}
 	Leaf::Leaf(Branch* parent, std::istream& in) : Node(parent, in), data{} {
 		std::uint8_t header = in.get();
-		octant = header & 0b111;
 		switch (header & TYPE_MASK) {
 		case LEAF_2BYTE: {
 			std::uint8_t foreground = in.get(),

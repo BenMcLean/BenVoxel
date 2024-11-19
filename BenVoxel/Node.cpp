@@ -6,11 +6,11 @@ namespace BenVoxel {
 		int header = in.peek();
 		if (header < 0)
 			throw std::runtime_error("Failed to read from input stream.");
-		octant = header & 7;
+		octant = header & 0b111;
 	}
-	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 7) {}
+	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 0b111) {}
 	std::uint8_t Node::getOctant() const {
-		return octant;
+		return octant & 0b111;
 	}
 	Branch* Node::getParent() const {
 		return const_cast<Branch*>(parent);
