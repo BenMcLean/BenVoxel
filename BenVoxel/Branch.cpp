@@ -1,8 +1,8 @@
 #include "Branch.h"
 namespace BenVoxel {
 	Branch::Branch() : Node(nullptr, 0), children{} {}
-	Branch::Branch(Branch* parent, std::uint8_t octant) : Node(parent, octant), children{} {}
-	Branch::Branch(Branch* parent, std::uint8_t octant, std::uint8_t color) : Node(parent, octant), children{}
+	Branch::Branch(Branch* parent, std::uint8_t octant) : Node(parent, octant & 0b111), children{} {}
+	Branch::Branch(Branch* parent, std::uint8_t octant, std::uint8_t color) : Node(parent, octant & 0b111), children{}
 	{
 		expandCollapsed(color);
 	}
