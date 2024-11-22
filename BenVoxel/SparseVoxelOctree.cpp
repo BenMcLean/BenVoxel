@@ -16,7 +16,6 @@ namespace BenVoxel {
 	SparseVoxelOctree::SparseVoxelOctree(std::istream& in, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ) : SparseVoxelOctree(sizeX, sizeY, sizeZ) {
 		root = Branch(nullptr, in);
 	}
-	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) : SparseVoxelOctree(voxels, UINT16_MAX, UINT16_MAX, UINT16_MAX) {}
 	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ) : SparseVoxelOctree(sizeX, sizeY, sizeZ) {
 		for (const Voxel& voxel : voxels)
 			set(voxel);

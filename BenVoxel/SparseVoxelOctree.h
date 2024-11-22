@@ -20,8 +20,7 @@ namespace BenVoxel {
 		SparseVoxelOctree(std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
 		SparseVoxelOctree(std::istream& in);
 		SparseVoxelOctree(std::istream& in, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
-		SparseVoxelOctree(std::list<Voxel> voxels);
-		SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
+		SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX = UINT16_MAX, std::uint16_t sizeY = UINT16_MAX, std::uint16_t sizeZ = UINT16_MAX);
 		SparseVoxelOctree(const SparseVoxelOctree& other);
 		virtual ~SparseVoxelOctree();
 		void write(std::ostream& out, bool includeSizes = true) const;
