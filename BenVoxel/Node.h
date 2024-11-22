@@ -3,8 +3,7 @@
 #include <stack>
 namespace BenVoxel {
 	class Branch;
-	const struct Position {
-	public:
+	struct Position {
 		const std::uint16_t x;
 		const std::uint16_t y;
 		const std::uint16_t z;
@@ -13,7 +12,7 @@ namespace BenVoxel {
 	class Node {
 	protected:
 		std::uint8_t octant = 0;
-		Branch* parent = nullptr;//Not owned, nullptr indicates root Branch
+		Branch* parent;//Not owned, nullptr indicates root Branch
 		static const std::uint8_t BRANCH_REGULAR = 0b00000000,
 			BRANCH_COLLAPSED = 0b01000000,
 			LEAF_2BYTE = 0b10000000,

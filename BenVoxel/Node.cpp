@@ -5,7 +5,7 @@ namespace BenVoxel {
 	Node::Node(Branch* parent, std::istream& in) : parent(parent), octant(0) {
 		octant = peekByte(in, "Failed to peek at node header byte from input stream.") & 0b111;
 	}
-	Node::Node(Branch* parent, std::uint8_t header) : parent(parent), octant(header & 0b111) {}
+	Node::Node(Branch* parent, std::uint8_t header) : octant(header & 0b111), parent(parent) {}
 	std::uint8_t Node::getOctant() const {
 		return octant & 0b111;
 	}

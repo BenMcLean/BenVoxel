@@ -76,6 +76,14 @@ namespace BenVoxel {
 	Node* Branch::operator[](std::uint8_t octant) const {
 		return children[octant].get();
 	}
+	Branch& Branch::operator=(Branch&& other) noexcept {
+		if (this != &other) {
+			octant = other.octant;
+			parent = other.parent;
+			children = std::move(other.children);
+		}
+		return *this;
+	}
 	void Branch::set(std::unique_ptr<Node> child) {
 		if (!child)
 			throw new std::invalid_argument("child should not be nullptr");

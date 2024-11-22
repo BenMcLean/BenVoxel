@@ -4,22 +4,31 @@
 #include <stack>
 #include "Branch.h"
 namespace BenVoxel {
-	const struct Voxel : public Position {
-	public:
+	struct Voxel : public Position {
 		const std::uint8_t index;
 		Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index);
 	};
 	class SparseVoxelOctree {
 	protected:
-		Branch root = {};
+		Branch root;
+		std::uint16_t sizeX;
+		std::uint16_t sizeY;
+		std::uint16_t sizeZ;
 		static void fillStack(std::stack<Branch*>& stack, Branch* branch);
 	public:
 		SparseVoxelOctree();
+		SparseVoxelOctree(std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
 		SparseVoxelOctree(std::istream& in);
+		SparseVoxelOctree(std::istream& in, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
 		SparseVoxelOctree(std::list<Voxel> voxels);
+		SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
 		SparseVoxelOctree(const SparseVoxelOctree& other);
+		virtual ~SparseVoxelOctree();
 		void write(std::ostream& out) const;
 		std::uint8_t operator[](Position& position) const;
+		std::uint16_t getSizeX() const;
+		std::uint16_t getSizeY() const;
+		std::uint16_t getSizeZ() const;
 		std::uint8_t get(std::uint16_t x, std::uint16_t y, std::uint16_t z) const;
 		void set(Voxel voxel);
 		void set(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index);

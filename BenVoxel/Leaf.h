@@ -7,7 +7,7 @@
 namespace BenVoxel {
 	class Leaf : public Node {
 	protected:
-		std::array<std::uint8_t, 8> data = {};
+		std::array<std::uint8_t, 8> data;
 	public:
 		Leaf(Branch* parent, std::uint8_t octant);
 		Leaf(Branch* parent, std::uint8_t octant, std::uint8_t color);

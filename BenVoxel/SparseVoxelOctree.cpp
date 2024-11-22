@@ -1,13 +1,30 @@
 #include "SparseVoxelOctree.h"
 namespace BenVoxel {
-	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index) : Position(x, y, z), index(index) { }
-	SparseVoxelOctree::SparseVoxelOctree() : root() { }
-	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : SparseVoxelOctree() { }
+	Voxel::Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index) : Position(x, y, z), index(index) {}
+	SparseVoxelOctree::SparseVoxelOctree() : root(), sizeX(UINT16_MAX), sizeY(UINT16_MAX), sizeZ(UINT16_MAX) {}
+	SparseVoxelOctree::SparseVoxelOctree(std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ) : root(), sizeX(sizeX), sizeY(sizeY), sizeZ(sizeZ) {}
+	SparseVoxelOctree::SparseVoxelOctree(std::istream& in) : SparseVoxelOctree() {
+		std::uint16_t dimensions[3] = { 0, 0, 0 };
+		in.read(reinterpret_cast<char*>(dimensions), sizeof(dimensions));
+		if (!in.good())
+			throw std::runtime_error("Failed to read model dimensions.");
+		sizeX = dimensions[0];
+		sizeY = dimensions[1];
+		sizeZ = dimensions[2];
+		root = Branch(nullptr, in);
+	}
+	SparseVoxelOctree::SparseVoxelOctree(std::istream& in, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ) : SparseVoxelOctree(sizeX, sizeY, sizeZ) {
+		root = Branch(nullptr, in);
+	}
 	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels) : SparseVoxelOctree() {
-		for (Voxel& voxel : voxels)
+		for (const Voxel& voxel : voxels)
 			set(voxel);
 	}
-	SparseVoxelOctree::SparseVoxelOctree(const SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels()) { }
+	SparseVoxelOctree::SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ) : SparseVoxelOctree(sizeX, sizeY, sizeZ) {
+		for (const Voxel& voxel : voxels)
+			set(voxel);
+	}
+	SparseVoxelOctree::SparseVoxelOctree(const SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels(), other.getSizeX(), other.getSizeY(), other.getSizeZ()) {}
 	void SparseVoxelOctree::write(std::ostream& out) const {
 		root.write(out);
 	}
@@ -99,8 +116,22 @@ namespace BenVoxel {
 		}
 		leaf->set((z & 1) << 2 | (y & 1) << 1 | x & 1, index);
 	}
+	SparseVoxelOctree::~SparseVoxelOctree() {
+		clear();
+	}
+	std::uint16_t SparseVoxelOctree::getSizeX() const {
+		return sizeX;
+	}
+	std::uint16_t SparseVoxelOctree::getSizeY() const {
+		return sizeY;
+	}
+	std::uint16_t SparseVoxelOctree::getSizeZ() const {
+		return sizeZ;
+	}
 	void SparseVoxelOctree::clear() {
-		for (uint8_t octant = 0; octant < 8; octant++)
-			root.remove(octant);
+		root = Branch();
+		sizeX = UINT16_MAX;
+		sizeY = UINT16_MAX;
+		sizeZ = UINT16_MAX;
 	}
 }
