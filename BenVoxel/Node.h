@@ -11,7 +11,7 @@ namespace BenVoxel {
 	};
 	class Node {
 	protected:
-		std::uint8_t octant = 0;
+		std::uint8_t octant;
 		Branch* parent;//Not owned, nullptr indicates root Branch
 		static const std::uint8_t BRANCH_REGULAR = 0b00000000,
 			BRANCH_COLLAPSED = 0b01000000,

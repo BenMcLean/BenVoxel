@@ -4,7 +4,7 @@
 #include <stack>
 #include "Branch.h"
 namespace BenVoxel {
-	struct Voxel : public Position {
+	struct Voxel : Position {
 		const std::uint8_t index;
 		Voxel(std::uint16_t x, std::uint16_t y, std::uint16_t z, std::uint8_t index);
 	};
