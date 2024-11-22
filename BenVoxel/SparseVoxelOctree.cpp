@@ -25,7 +25,11 @@ namespace BenVoxel {
 			set(voxel);
 	}
 	SparseVoxelOctree::SparseVoxelOctree(const SparseVoxelOctree& other) : SparseVoxelOctree(other.voxels(), other.getSizeX(), other.getSizeY(), other.getSizeZ()) {}
-	void SparseVoxelOctree::write(std::ostream& out) const {
+	void SparseVoxelOctree::write(std::ostream& out, bool includeSizes) const {
+		if (includeSizes) {
+			uint16_t dimensions[3] = { sizeX, sizeY, sizeZ };
+			out.write(reinterpret_cast<const char*>(dimensions), sizeof(dimensions));
+		}
 		root.write(out);
 	}
 	std::uint8_t SparseVoxelOctree::operator[](Position& position) const {

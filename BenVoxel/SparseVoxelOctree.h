@@ -24,7 +24,7 @@ namespace BenVoxel {
 		SparseVoxelOctree(std::list<Voxel> voxels, std::uint16_t sizeX, std::uint16_t sizeY, std::uint16_t sizeZ);
 		SparseVoxelOctree(const SparseVoxelOctree& other);
 		virtual ~SparseVoxelOctree();
-		void write(std::ostream& out) const;
+		void write(std::ostream& out, bool includeSizes = true) const;
 		std::uint8_t operator[](Position& position) const;
 		std::uint16_t getSizeX() const;
 		std::uint16_t getSizeY() const;

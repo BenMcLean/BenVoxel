@@ -20,7 +20,7 @@ int main()
 	inFile.close();
 	std::ofstream outFile;
 	outFile.open("./SORA2.SVO", std::ios::binary);
-	BenVoxel::SparseVoxelOctree(svo).write(outFile);
+	svo.write(outFile);
 	outFile.close();
 
 	//BenVoxel::SparseVoxelOctree svo;
