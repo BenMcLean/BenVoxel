@@ -86,7 +86,7 @@ namespace BenVoxel {
 	}
 	void Branch::set(std::unique_ptr<Node> child) {
 		if (!child)
-			throw new std::invalid_argument("child should not be nullptr");
+			throw std::invalid_argument("child should not be nullptr.");
 		children[child->getOctant()] = std::move(child);
 	}
 	void Branch::remove(std::uint8_t octant) {
