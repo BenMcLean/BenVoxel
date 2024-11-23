@@ -12,8 +12,7 @@ namespace {
 	}
 }
 */
-int main()
-{
+int main() {
 	std::ifstream inFile;
 	inFile.open("./SORA.SVO", std::ios::binary);
 	BenVoxel::SparseVoxelOctree svo(inFile);
